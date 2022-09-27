@@ -21,16 +21,22 @@ function App() {
   */
 
   function addItem() {
-    setItems({
-      id: Math.floor(Math.random() * 1000),
-      value: newItem
-    });
+    // adds item to item arr if the item is not empty then returns item input to blank
+    if (newItem !== "") {
+      const item = { 
+        id: Math.floor(Math.random() * 1000), 
+        value: newItem }
+      setItems(arr => [...arr, item]);
+      setNewItem("");
+    }
   }
 
   /* TODO: Complete this method to delete an item(with id) from the items array */
   function deleteItem(id) {
-    const result = items.filter((e) => e.id !== id)
-    setItems(result);
+    // filters through item options and deletes item based on id
+    setItems(items => items.filter(info => {
+      return info.id !== id;
+    }))
   }
 
 
@@ -39,6 +45,7 @@ function App() {
     <div className="app">
       {
       /* TODO: Add the Header component */
+      // displays header
       <Header />
       }
 
@@ -47,10 +54,11 @@ function App() {
         placeholder="Add an item..."
         value={newItem}
         // onChange={}  TODO: complete the onChange to call the setNewItem hook. 
-        onChange={(id) => setNewItem(id)}
+        onChange={(id) => setNewItem(id.target.value)}
       />
 
       {/* TODO: Add a button with onClick that calls the addItem() */}
+      // adds item to array
       <button onClick={addItem}>Add</button>
 
         {/* TODO: Iterate through the items array, for each:
@@ -58,13 +66,13 @@ function App() {
                 b. Add a button that deletes the item (HINT this button onClick should call deleteItem() 
                     i. use ❌ as the content for your delete button 
                     ii. use className="delete-button" also */}
+      {items().map((item, index) => (
+        <div key={index}>
 
-      {items().map((item) => (
-        <div>
+          <Item item={item.value} />
 
-          <Item item={item} />
-
-          <button onClick={() => deleteItem(item.id)} className="-button">❌</button>
+          // deletes item from arr onClick
+          <button onClick={() => deleteItem(item.id)} className="delete-button">❌</button>
 
         </div>
       
